@@ -1,0 +1,29 @@
+Parameters:
+  VpcId:
+    Type: String
+    Description: ID of the VPC to deploy RDS
+    Default: "SharedSystemVpcId"
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: List of subnet IDs for RDS
+
+Resources:
+  RDSDatabase:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      Engine: aurora
+      EngineMode: serverless
+      MasterUsername: "Aryansharma9917"
+      MasterUserPassword: "Aryan@9917"
+      VpcSecurityGroupIds:
+        - "sg-0c175577ad3d18296"
+      DBSubnetGroupName: "RDS-Subnet-Group"
+      EnableHttpEndpoint: true
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 2
+        MinCapacity: 1
+        SecondsUntilAutoPause: 300
+      Tags:
+        - Key: Name
+          Value: AuroraServerlessDB

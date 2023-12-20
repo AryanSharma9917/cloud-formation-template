@@ -1,0 +1,31 @@
+Parameters:
+  VpcId:
+    Type: String
+    Description: ID of the VPC to deploy VPN client
+    Default: "vpc-0c05fd76bef5b57fa"
+
+Resources:
+  VPNClient:
+    Type: AWS::EC2::ClientVpnEndpoint
+    Properties:
+      ClientCidrBlock: "10.0.5.0/24"
+      ConnectionLogOptions:
+        Enabled: true
+    #   ServerCertificateArn: "<your_server_certificate_arn>"
+      AuthenticationOptions:
+        - Type: certificate-authentication
+          MutualAuthentication:
+            ClientRootCertificateChainArn: "<your_client_root_cert_arn>"
+            ServerRootCertificateChainArn: "<your_server_root_cert_arn>"
+          ActiveDirectory:
+            DirectoryId: "<your_directory_id>"
+            DnsServers:
+              - "<your_dns_server>"
+      SecurityGroupIds:
+        - "sg-0c175577ad3d18296"  
+      VpcId: !Ref VpcId
+      TagSpecifications:
+        - ResourceType: client-vpn-endpoint
+          Tags:
+            - Key: Name
+              Value: VPNClient
